@@ -48,7 +48,7 @@
     
 <div class="container">
     <div>
-    <h3><!--{{ farm.farm_name }}-->Brubaker Visits</h3>
+    <h3>{{ farm.farm_name }} Visits</h3>
     </div>
 <div class="row">
 <div class="bs-component">
@@ -63,19 +63,19 @@
     <div id="myTabContent" class="tab-content">
       <div class="tab-pane fade active in" id="alpha">
         <div class="list-group">
-            <a href="http://52.33.227.93:8000/FarmInfo/visitDetail/1/" class="list-group-item"> 2/1/2016 </a>
+            <!-- <a href="http://52.33.227.93:8000/FarmInfo/visitDetail/1/" class="list-group-item"> 2/1/2016 </a>
             <a href="http://52.33.227.93:8000/FarmInfo/visitDetail/1/" class="list-group-item"> 2/4/2016 </a> 
             <a href="http://52.33.227.93:8000/FarmInfo/visitDetail/1/" class="list-group-item"> 2/6/2016 </a> 
             <a href="http://52.33.227.93:8000/FarmInfo/visitDetail/1/" class="list-group-item"> 2/18/2016 </a> 
-            <a href="http://52.33.227.93:8000/FarmInfo/visitDetail/1/" class="list-group-item"> 2/21/2016 </a> 
-            <!--{% if visit_list %}
-                {% for visit in visit_list %}
-                    <a href="{% url 'viewVisits' farm.id %}" class="list-group-item">{{ visit }}</a>
+            <a href="http://52.33.227.93:8000/FarmInfo/visitDetail/1/" class="list-group-item"> 2/21/2016 </a>  -->
+            {% if visit_dates %}
+                {% for visit in visit_dates %}
+                    <a href="{% url 'visitDetail' visit.id %}" class="list-group-item">{{ visit }}</a>
                 {% endfor %}
              
             {% else %}
-                <p>No visits to this farm.</p>
-            {% endif %}-->
+                <p>No visits for this farm.</p>
+            {% endif %}
         </div>
       </div>
     </div>
