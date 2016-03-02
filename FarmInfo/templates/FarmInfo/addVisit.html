@@ -1,0 +1,151 @@
+{% load staticfiles %}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap Core CSS -->
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+
+<body>
+	<nav class="navbar navbar-default">
+	  <div class="container">
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="#">ACRES Web APP</a>
+	    </div>
+
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	        <li><a href="{% url 'index' %}">View Farms</a></li>
+	        <li class="dropdown">
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Add...<span class="caret"></span></a>
+	          <ul class="dropdown-menu" role="menu">
+	            <li><a href="{% url 'addFarm' %}">Add a New Farm</a></li>
+	            <li class="divider"></li>
+	            <li><a href="{% url 'addCrop' %}">Add a New Crop</a></li>
+	            <li class="divider"></li>
+	            <li><a href="#">Add a New Pending Action</a></li>
+	          </ul>
+	        </li>
+	      </ul>
+	      <ul class="nav navbar-nav navbar-right">
+	        <form class="navbar-form navbar-left" role="search">
+	        <div class="form-group">
+	          <input type="text" class="form-control" placeholder="Farm/Client/Action...">
+	        </div>
+	        <button type="submit" class="btn btn-default">Search</button>
+	      </form>
+	      </ul>
+	    </div>
+	  </div>
+	</nav>
+
+
+	<div class="container">
+	<form class="form-horizontal" method="post">
+	<div class="col-lg-11"> 
+	
+	  {% csrf_token %}
+	  <fieldset>
+
+	  {% for field in visitForm %}
+	    <div class="form-group"> 
+ 		<label class="col-lg-3 control-label" for="{{ field.label }}">{{ field.label }}</label>
+		   <div class="col-lg-8">
+			  	{{ field }}
+			</div>		  
+		</div>
+	  {% endfor%}
+	  </fieldset>
+
+	  <fieldset>
+	    {% for field in problemSpecificForm %}
+		    <div class="form-group">
+		      
+			  <label class="control-label col-lg-3" for="{{ field.label }}">{{ field.label }}</label>
+			  <div class="col-lg-8">
+			  	{{ field }}
+			  </div>
+			</div>
+		{% endfor %}
+	  </fieldset>   
+
+	  
+	  <fieldset>
+	    {% for field in problemForm %}
+		    <div class="form-group">
+		      
+			  <label class="control-label col-lg-3" for="{{ field.label }}">{{ field.label }}</label>
+			  <div class="col-lg-8">
+			  	{{ field }}
+			  </div>
+			</div>
+		{% endfor %}
+	  </fieldset>
+
+	</div>
+
+
+    <div class="form-group">
+      <div class="col-lg-10 col-lg-offset-5">
+        <button type="reset" class="btn btn-default">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+	</form>
+	
+
+	<a href="#" class="btn btn-lg btn-success" 
+   data-toggle="modal" 
+   data-target="#basicModal">Click to open Modal</a>
+
+   <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&amp;times;</button>
+            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <h3>Modal Body</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+
+	</div>
+
+
+<br>
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <ul class="list-inline">
+            <li><a href="#">Home</a></li>
+            <li class="footer-menu-divider">&sdot;</li>
+            <li><a href="#about">About</a></li>
+            <li class="footer-menu-divider">&sdot;</li>
+            <li><a href="./homePage.php">Login</a></li>
+          </ul>
+          <p class="copyright text-muted small">Copyright &copy; ACRES 2015. All Rights Reserved</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+<!-- jQuery -->
+<script src="{% static 'js/jquery.js' %}"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
