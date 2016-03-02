@@ -4,8 +4,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import Farm, Crop, Client, Ownership, Farm_has_visit, Visit, Problem, Visit_has_problem, Problem_specifics, Problem_has_specifics
 from .forms import CropForm, FarmForm, ClientForm, VisitForm, ProblemForm, ProblemSpecificForm
 
-# EDITED
-
 # .../FarmInfo page
 def index(request):
 	farm_list = Farm.objects.all()
