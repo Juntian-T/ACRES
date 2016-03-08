@@ -152,26 +152,23 @@ def addVisit(request, farm_id):
 
 # .../FarmInfo/viewVisits pages
 def viewVisits(request, farm_id):
-    farm = get_object_or_404(Farm, pk=farm_id) # get the farm by id
-    # get all farm-visit relationships by the specific farm id
-    farm_visits = Farm_has_visit.objects.filter(pk=farm_id)
-    # get visit ids from farm_visits
-    visit_ids = [ seq[1] for seq in farm_visits ]# get the visit ids out of the tuple in farm_visits
+	farm = get_object_or_404(Farm, pk=farm_id) # get the farm by id
+	# get all farm-visit relationships by the specific farm id
+	farm_visits = Farm_has_visit.objects.filter(pk=farm_id)
+	# get visit ids from farm_visits
+	visit_ids = [ seq[1] for seq in farm_visits ]# get the visit ids out of the tuple in farm_visits
+    
     # get visit dates from visit_ids
-    visit_dates = []
-    for vId in visit_ids:
-    	# get visit dates by visit ids
-        vDate = Visit.objects.get(pk=vId).visit_date
-        # create list of visit dates based on visit ids
-        visit_dates.append(vDate)
+	visit_dates = []
 
-    #visit_dates = {'visit list' : visit_list}
-# #    visit_ids = farm_visits.
-#    visit_list = []
-   
-   # return the farm and corresponding visit dates to viewVisits page
-   return render(request, 'FarmInfo/viewVisits.html', farm, visit_dates)
+	for vId in visit_ids:
+		# get visit dates by visit ids
+		vDate = Visit.objects.get(pk=vId).visit_date
+		# create list of visit dates based on visit ids
+		visit_dates.append(vDate)
+	# return the farm and corresponding visit dates to viewVisits page
+	return render(request, 'FarmInfo/viewVisits.html', farm, visit_dates)
 
 # .../FarmInfo/visitDetail pages
 def visitDetail(request):
-   return render(request, 'FarmInfo/visitDetail.html')
+	return render(request, 'FarmInfo/visitDetail.html')
