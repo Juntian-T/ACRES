@@ -71,19 +71,51 @@
 			  <div class="col-lg-8">
 			  	{{ field }}
 			  </div>
+
+			   {% if field.label == "Problem Specific"  %}
+			   <div class="col-lg-2">
+			  	  <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#basicModal">A New Problem?</a>
+				   	<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+				    	<div class="modal-dialog">
+				        	<div class="modal-content">
+				            	<div class="modal-header">
+				            	<h4 class="modal-title" id="myModalLabel">Add a new specfic name</h4>
+				            	</div>
+				            	<div class="modal-body">
+				            	{% for field in newSpecificForm %}
+				                <label class="control-label col-lg-3" for="{{ field.label }}">{{ field.label }}</label>
+				                 <div class="col-lg-8"> {{ field }} </div>
+				                {% endfor%}
+				            	</div>
+				            	<div class="modal-footer">
+				                	<button type="button" class="btn btn-default btn-xs" data-dismiss="modal">Close</button>
+				                	<button type="submit" class="btn btn-primary btn-xs">Save changes</button>
+				        		</div>
+							</div>
+				  		</div>
+					</div>
+				</div>
+			   {% endif %}
+			   
 			</div>
 		{% endfor %}
 	  </fieldset>   
 
-	  
+
+
+
 	  <fieldset>
 	    {% for field in problemForm %}
 		    <div class="form-group">
 		      
 			  <label class="control-label col-lg-3" for="{{ field.label }}">{{ field.label }}</label>
 			  <div class="col-lg-8">
-			  	{{ field }}
+			  	{{ field }} 
 			  </div>
+
+			 
+
+
 			</div>
 		{% endfor %}
 	  </fieldset>
@@ -99,31 +131,6 @@
     </div>
 	</form>
 	
-
-	<a href="#" class="btn btn-lg btn-success" 
-   data-toggle="modal" 
-   data-target="#basicModal">Click to open Modal</a>
-
-   <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&amp;times;</button>
-            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
-            <div class="modal-body">
-                <h3>Modal Body</h3>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-    </div>
-  </div>
-</div>
-
-
-
 	</div>
 
 

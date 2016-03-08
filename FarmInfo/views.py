@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 
 from .models import Farm, Crop, Client, Ownership, Farm_has_visit, Visit, Problem, Visit_has_problem, Problem_specifics, Problem_has_specifics
-from .forms import CropForm, FarmForm, ClientForm, VisitForm, ProblemForm, ProblemSpecificForm
+from .forms import CropForm, FarmForm, ClientForm, VisitForm, ProblemForm, ProblemSpecificForm, NewSpecificForm
 
 # .../FarmInfo page
 def index(request):
@@ -93,6 +93,7 @@ def addVisit(request, farm_id):
 		visitForm = VisitForm(request.POST, prefix='form1')
 		problemForm = ProblemForm(request.POST, prefix='form2')
 		problemSpecificForm = ProblemSpecificForm(request.POST, prefix='form3')
+		newSpecificForm = NewSpecificForm(request.POST, prefix='form4')
 
 		if visitForm.is_valid() and problemForm.is_valid() and problemSpecificForm.is_valid():
 			# collect user's input for visitForm
@@ -105,6 +106,9 @@ def addVisit(request, farm_id):
 			# collect user's input for problemSpecificForm
 			type_name = problemSpecificForm.cleaned_data['type_name']
 			specific_name = problemSpecificForm.cleaned_data['specific_name']
+
+			# if the user decided to add a new specific problem
+			typed_specific_name = newSpecificForm.cleaned_data['typed_specific_name'];
 
 			# add the visit to database
 			query_visit = Visit(visit_date=visit_date)
@@ -143,7 +147,8 @@ def addVisit(request, farm_id):
 		visitForm = VisitForm(prefix='form1')
 		problemForm = ProblemForm(prefix='form2')
 		problemSpecificForm = ProblemSpecificForm(prefix='form3')
-	return render(request, 'FarmInfo/addVisit.html', {'visitForm': visitForm, 'problemForm': problemForm, 'problemSpecificForm': problemSpecificForm})
+		newSpecificForm = NewSpecificForm(prefix='form4')
+	return render(request, 'FarmInfo/addVisit.html', {'visitForm': visitForm, 'problemForm': problemForm, 'problemSpecificForm': problemSpecificForm, 'newSpecificForm': newSpecificForm})
 
 # .../FarmInfo/viewVisits pages
 def viewVisits(request, farm_id):

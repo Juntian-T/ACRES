@@ -32,19 +32,22 @@ class ClientForm(forms.Form):
 		
 # The Visit form, 1 field is needed
 class VisitForm(forms.Form):
-	visit_date = forms.DateField(widget=SelectDateWidget(attrs={'class':'form-control col-lg-7'}), label='Visit Date*', required=True)
+	visit_date = forms.DateField(widget=SelectDateWidget(attrs={'class':'form-control col-lg-7'}), label='Visit Date', required=True)
 
 # The Problem from
 class ProblemForm(forms.Form):
 	#farm_id will come from the view
-	crop_name = forms.ModelChoiceField(queryset=Crop.objects.all().order_by('crop_name'))
+	crop_name = forms.ModelChoiceField(queryset=Crop.objects.all().order_by('crop_name'), label='Crop Affected')
 	notes = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control col-lg-7'}), label='Notes' , required=False)
 
 # Problem specific form
 class ProblemSpecificForm(forms.Form):
-	type_name = forms.ModelChoiceField(queryset=Problem_type.objects.all().order_by('type_name'))
-	specific_name = forms.ModelChoiceField(queryset=Problem_specifics.objects.all().order_by('name'))
+	type_name = forms.ModelChoiceField(queryset=Problem_type.objects.all().order_by('type_name'), label='Problem Type')
+	specific_name = forms.ModelChoiceField(queryset=Problem_specifics.objects.all().order_by('name'), label='Problem Specific')
 	# TODO: REMEMBER TO USE AJAX TO GET THE SPECIFICS OF THIS CERTAIN TYPE!!!!
+
+class NewSpecificForm(forms.Form):
+	typed_specific_name = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control col-lg-7'}), label='New problem name')
 
 
 
