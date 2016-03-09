@@ -167,7 +167,7 @@ def viewVisits(request, farm_id):
 		# create list of visit dates based on visit ids
 		visit_dates.append(vDate)
 	# return the farm and corresponding visit dates to viewVisits page
-	return render(request, 'FarmInfo/viewVisits.html', farm, visit_dates)
+	return render(request, 'FarmInfo/viewVisits.html', {'farm': farm, 'visit_dates': visit_dates})
 
 # .../FarmInfo/visitDetail pages
 def visitDetail(request):
