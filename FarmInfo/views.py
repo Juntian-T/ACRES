@@ -166,9 +166,35 @@ def viewVisits(request, farm_id):
 		vDate = Visit.objects.get(pk=vId).visit_date
 		# create list of visit dates based on visit ids
 		visit_dates.append(vDate)
+
+	zipped_list = zip(visit_dates, farm_visits)
 	# return the farm and corresponding visit dates to viewVisits page
-	return render(request, 'FarmInfo/viewVisits.html', {'farm': farm, 'visit_dates': visit_dates, 'farm_visits': farm_visits})
+	return render(request, 'FarmInfo/viewVisits.html', {'farm': farm, 'zipped_list': zipped_list})
 
 # .../FarmInfo/visitDetail pages
-def visitDetail(request):
-	return render(request, 'FarmInfo/visitDetail.html')
+def visitDetail(request, visit_id):
+	visit = get_object_or_404(Visit, pk=visit_id) 
+
+	#get list of problem ids with that visit id
+	problems_with_id = Visit_has_problem.objects.filter(visit_id=visit_id).values_list('problem_id', flat=True)
+
+	problem_type_list = []
+	problem_specific_list = []
+	crop_list = []
+	notes_list = []
+
+	for pID in problems_with_id:
+		# get the specific problem id from the given problem id in the problem_has_specifics relation table
+		problemSpecs1 = Problem_has_specifics.objects.filter(problem_id=pID).values_list('specific_id', flat=True)
+
+		# add details of each problem to appropriate lists
+		problem_type_list.append(Problem_specifics.objects.get(pk=problemSpecs1).type_name)
+		problem_specific_list.append(Problem_specifics.objects.get(pk=problemSpecs1).name)
+		crop_list.append(Problem.objects.get(pk=pID).crop_name)
+		notes_list.append(Problem.objects.get(pk=pID).notes)
+	return render(request, 'FarmInfo/visitDetail.html', {'problem_type_list': problem_type_list, 'problem_specific_list': problem_specific_list, 'crop_list': crop_list, 'notes_list': notes_list, 'visit': visit})
+
+
+
+
+

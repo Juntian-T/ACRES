@@ -48,7 +48,7 @@
     
   <div class="container">
  
-  <div class="col-lg-6">
+<!--   <div class="col-lg-6">
     <h3>2/1/2016</h3>
     <div class="panel panel-primary">
       <div class="panel-heading">
@@ -78,8 +78,27 @@
       </div>
     </div>
   </div>
+  </div> -->
+
+
+    <div class="col-lg-6">
+    <h3>{{visit.visit_date}}</h3>
+
+    {% for prob in problem_type_list %}
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">{{problem_specific_list.forloop.counter0}}</h3>
+      </div>
+      <div class="panel-body">
+        Problem Type: {{problem_type_list.forloop.counter0}}<br>
+        Specific Problem: {{problem_specific_list.forloop.counter0}}<br>
+        Crop Affected: {{crop_list.forloop.counter0}}<br>
+        Notes: {{notes_list.forloop.counter0}}<br>
+      </div>
+    </div>
   </div>
- 
+  </div>
+ {% endfor %}
 
   <br>
   <footer>

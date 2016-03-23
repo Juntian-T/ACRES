@@ -25,5 +25,5 @@ urlpatterns = [
     url(r'^viewVisits/(?P<farm_id>[0-9]+)/$', views.viewVisits, name='viewVisits'),
     
     # .../FarmInfo/visitDetail
-    url(r'^visitDetail/1/$', views.visitDetail, name='visitDetail'),
+    url(r'^visitDetail/(?P<visit_id>[0-9]+)/$', views.visitDetail, name='visitDetail'),
 ]
