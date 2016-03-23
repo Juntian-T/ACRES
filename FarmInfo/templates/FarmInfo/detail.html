@@ -30,8 +30,6 @@
               <li><a href="{% url 'addFarm' %}">Add a New Farm</a></li>
               <li class="divider"></li>
               <li><a href="{% url 'addCrop' %}">Add a New Crop</a></li>
-              <li class="divider"></li>
-              <li><a href="#">Add a New Pending Action</a></li>
             </ul>
           </li>
         </ul>
@@ -149,6 +147,17 @@
     </div>
     {% endif%}
   </div>
+ 
+  <div class="col-lg-6">
+    <h3>View old visits?</h3>
+      <a href="{% url 'viewVisits' farm.id %}" class="btn btn-primary btn-xs">View Old Visits</a>
+    </div>
+
+
+  <div class="col-lg-6">
+    <h3>Have a new visit?</h3>
+      <a href="{% url 'addVisit' farm.id %}" class="btn btn-primary btn-xs">Add A New Visit</a>
+    </div>
   </div>
 
   <br>
