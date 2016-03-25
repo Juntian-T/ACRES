@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
 
 from .models import Farm, Crop, Client, Ownership, Farm_has_visit, Visit, Problem, Visit_has_problem, Problem_specifics, Problem_has_specifics
 from .forms import CropForm, FarmForm, ClientForm, VisitForm, ProblemForm, ProblemSpecificForm, NewSpecificForm
@@ -76,8 +77,6 @@ def addFarm(request):
 			query3 = Ownership(farm_id=farm_id, client_id=client_id)
 			query3.save()
 
-			
-
 		return HttpResponseRedirect('../')
 	else:
 		farmForm = FarmForm(prefix='form1')
@@ -108,7 +107,7 @@ def addVisit(request, farm_id):
 			specific_name = problemSpecificForm.cleaned_data['specific_name']
 
 			# if the user decided to add a new specific problem
-			typed_specific_name = newSpecificForm.cleaned_data['typed_specific_name'];
+			# typed_specific_name = newSpecificForm.cleaned_data['typed_specific_name'];
 
 			# add the visit to database
 			query_visit = Visit(visit_date=visit_date)
@@ -142,6 +141,8 @@ def addVisit(request, farm_id):
 			specific_id = Problem_specifics.objects.latest('id')
 			query_problem_has_specifics = Problem_has_specifics(problem_id=problem_id, specific_id=specific_id)
 			query_problem_has_specifics.save()
+
+			messages.success(request, 'New Visit Added!')
 
 	else:
 		visitForm = VisitForm(prefix='form1')
@@ -192,7 +193,11 @@ def visitDetail(request, visit_id):
 		problem_specific_list.append(Problem_specifics.objects.get(pk=problemSpecs1).name)
 		crop_list.append(Problem.objects.get(pk=pID).crop_name)
 		notes_list.append(Problem.objects.get(pk=pID).notes)
-	return render(request, 'FarmInfo/visitDetail.html', {'problem_type_list': problem_type_list, 'problem_specific_list': problem_specific_list, 'crop_list': crop_list, 'notes_list': notes_list, 'visit': visit})
+
+	zipped_list = zip(problem_type_list, problem_specific_list, crop_list, notes_list)
+
+	return render(request, 'FarmInfo/visitDetail.html', {'zipped_list': zipped_list, 'visit': visit})
+
 
 
 

@@ -84,21 +84,22 @@
     <div class="col-lg-6">
     <h3>{{visit.visit_date}}</h3>
 
-    {% for prob in problem_type_list %}
+    {% for type, specific, crop, notes in zipped_list %}
     <div class="panel panel-primary">
       <div class="panel-heading">
-        <h3 class="panel-title">{{problem_specific_list.forloop.counter0}}</h3>
+        <h3 class="panel-title">{{ specific }}</h3>
       </div>
       <div class="panel-body">
-        Problem Type: {{problem_type_list.forloop.counter0}}<br>
-        Specific Problem: {{problem_specific_list.forloop.counter0}}<br>
-        Crop Affected: {{crop_list.forloop.counter0}}<br>
-        Notes: {{notes_list.forloop.counter0}}<br>
+        Problem Type: {{ type }}<br>
+        Specific Problem: {{ specific }}<br>
+        Crop Affected: {{ crop }}<br>
+        Notes: {{ notes }}<br>
       </div>
     </div>
+    {% endfor %}
   </div>
   </div>
- {% endfor %}
+ 
 
   <br>
   <footer>

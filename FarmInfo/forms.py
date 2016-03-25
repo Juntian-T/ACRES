@@ -2,6 +2,7 @@ from django import forms
 from django.forms.extras.widgets import SelectDateWidget
 from models import Crop, Problem_type, Problem_specifics
 
+import datetime
 # This file defines forms, which collect inputs from user to add entry to database
 
 # The Crop form, only one field is needed (the crop name)
@@ -32,7 +33,7 @@ class ClientForm(forms.Form):
 		
 # The Visit form, 1 field is needed
 class VisitForm(forms.Form):
-	visit_date = forms.DateField(widget=SelectDateWidget(attrs={'class':'form-control col-lg-7'}), label='Visit Date', required=True)
+	visit_date = forms.DateField(widget=SelectDateWidget(attrs={'class':'form-control col-lg-7'}), initial=datetime.date.today, label='Visit Date', required=True)
 
 # The Problem from
 class ProblemForm(forms.Form):

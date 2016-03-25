@@ -98,10 +98,6 @@
 			</div>
 		{% endfor %}
 	  </fieldset>   
-
-
-
-
 	  <fieldset>
 	    {% for field in problemForm %}
 		    <div class="form-group">
@@ -110,16 +106,17 @@
 			  <div class="col-lg-8">
 			  	{{ field }} 
 			  </div>
-
-			 
-
-
 			</div>
 		{% endfor %}
 	  </fieldset>
-
 	</div>
-
+	{% if messages %}
+		<ul class="messages">
+    	{% for message in messages %}
+    		<li{% if message.tag %} class="{{ message.tag }}"{% endif %}>{{ message }}</li>
+    	{% endfor %}
+		</ul>
+	{% endif %}
 
     <div class="form-group">
       <div class="col-lg-10 col-lg-offset-5">
