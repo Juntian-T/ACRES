@@ -2,8 +2,8 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 
-from .models import Farm, Crop, Client, Ownership, Farm_has_visit, Visit, Problem, Visit_has_problem, Problem_specifics, Problem_has_specifics
-from .forms import CropForm, FarmForm, ClientForm, VisitForm, ProblemForm, ProblemSpecificForm, NewSpecificForm
+from .models import Farm, Crop, Client, Ownership, Grows, Farm_has_visit, Visit, Problem, Visit_has_problem, Problem_specifics, Problem_has_specifics
+from .forms import CropForm, FarmForm, ClientForm, VisitForm, ProblemForm, ProblemSpecificForm, NewSpecificForm, GrowsForm
 
 # .../FarmInfo page
 def index(request):
@@ -16,7 +16,8 @@ def detail(request, farm_id):
 	farm = get_object_or_404(Farm, pk=farm_id) # get the farm by id
 	owner_id = Ownership.objects.get(farm_id=farm_id).client_id_id # get the farm's owner's id
 	owner = Client.objects.get(pk=owner_id) # get the owner info
-	return render(request, 'FarmInfo/detail.html', {'farm': farm, 'owner': owner}) # send these information to the detail.html template
+	crops = Grows.objects.all().filter(farm_id=farm_id)
+	return render(request, 'FarmInfo/detail.html', {'farm': farm, 'owner': owner, 'crop': crops}) # send these information to the detail.html template
 	
 # .../FarmInfo/addCrop page
 def addCrop(request):
@@ -200,6 +201,21 @@ def visitDetail(request, visit_id):
 	zipped_list = zip(problem_type_list, problem_specific_list, crop_list, notes_list, pic_list)
 
 	return render(request, 'FarmInfo/visitDetail.html', {'zipped_list': zipped_list, 'visit': visit})
+
+def addCropsToFarm(request, farm_id):
+	all_crops = Crop.objects.all().order_by('crop_name')
+	if request.method == 'POST':
+		grows_form = GrowsForm(request.POST)
+		selected_crop = request.POST.getlist('crop_name')
+		farm = get_object_or_404(Farm, pk=farm_id)
+		for x in selected_crop:
+			grows_query = Grows(farm_id=farm, crop_name=get_object_or_404(Crop, pk=x))
+			grows_query.save()
+
+	else:
+		grows_form = GrowsForm()
+
+	return render(request, 'FarmInfo/addCropsToFarm.html', {'grows_form': grows_form})
 
 
 

@@ -51,5 +51,9 @@ class ProblemSpecificForm(forms.Form):
 class NewSpecificForm(forms.Form):
 	typed_specific_name = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control col-lg-7'}), label='New problem name')
 
+class GrowsForm(forms.Form):
+	CHOICES = [(x.crop_name, x.crop_name) for x in Crop.objects.all().order_by('crop_name')]
+	crop_name = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=CHOICES, label='Crops')
+
 
 

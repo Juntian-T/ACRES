@@ -100,6 +100,21 @@
       </div>
     </div>
     {% endif%}
+
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">Crops Grown on This Farm</h3>
+      </div>
+      <div class="panel-body">
+        {% for x in crop %}
+          {{ x.crop_name }} <br>
+        {% endfor%}
+        <div class="col-lg-6">
+          <a href="{% url 'addCropsToFarm' farm.id %}" class="btn btn-primary btn-xs">Add more crops to this farm</a>
+        </div>
+      </div>
+    </div>
+
   </div>
   
   <!-- Farm owner's information -->
@@ -151,7 +166,7 @@
   <div class="col-lg-6">
     <h3>View old visits?</h3>
       <a href="{% url 'viewVisits' farm.id %}" class="btn btn-primary btn-xs">View Old Visits</a>
-    </div>
+  </div>
 
 
   <div class="col-lg-6">
