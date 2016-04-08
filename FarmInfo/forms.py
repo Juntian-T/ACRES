@@ -40,6 +40,7 @@ class ProblemForm(forms.Form):
 	#farm_id will come from the view
 	crop_name = forms.ModelChoiceField(queryset=Crop.objects.all().order_by('crop_name'), label='Crop Affected')
 	notes = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control col-lg-7'}), label='Notes' , required=False)
+	picture = forms.ImageField();
 
 # Problem specific form
 class ProblemSpecificForm(forms.Form):

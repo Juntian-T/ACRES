@@ -108,3 +108,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+PROJECT_ROOT = os.path.join(os.path.dirname(__file__), '..')
+SITE_ROOT = PROJECT_ROOT
+MEDIA_ROOT = os.path.join(SITE_ROOT,'images')
+MEDIA_URL = '/images/'

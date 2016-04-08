@@ -84,7 +84,7 @@
     <div class="col-lg-6">
     <h3>{{visit.visit_date}}</h3>
 
-    {% for type, specific, crop, notes in zipped_list %}
+    {% for type, specific, crop, notes, pic in zipped_list %}
     <div class="panel panel-primary">
       <div class="panel-heading">
         <h3 class="panel-title">{{ specific }}</h3>
@@ -94,6 +94,7 @@
         Specific Problem: {{ specific }}<br>
         Crop Affected: {{ crop }}<br>
         Notes: {{ notes }}<br>
+        Picture: <img src="{{ pic.url }}" width="100%"/><br>
       </div>
     </div>
     {% endfor %}

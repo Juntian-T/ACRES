@@ -51,6 +51,7 @@ class Problem(models.Model):
 	farm_id = models.ForeignKey(Farm)
 	crop_name = models.ForeignKey(Crop) # null = True is omitted
 	notes = models.TextField(blank=True)
+	img = models.ImageField(upload_to='images', default='images/default.png');
 	# action_type 
 	# def __str__(self):
 	# 	return "Problem at farm" + self.farm_id

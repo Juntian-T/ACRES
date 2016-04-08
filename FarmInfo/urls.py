@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.conf import settings
 
 from . import views
 
@@ -26,4 +27,6 @@ urlpatterns = [
     
     # .../FarmInfo/visitDetail
     url(r'^visitDetail/(?P<visit_id>[0-9]+)/$', views.visitDetail, name='visitDetail'),
+
+    #url(r'^images/(?P<path>.*)$', 'django.views.images.serve',{'document_root': settings.MEDIA_ROOT}),
 ]

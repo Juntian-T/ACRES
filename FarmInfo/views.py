@@ -90,7 +90,7 @@ def addVisit(request, farm_id):
 	if request.method == 'POST':
 		#Three forms are needed for this page
 		visitForm = VisitForm(request.POST, prefix='form1')
-		problemForm = ProblemForm(request.POST, prefix='form2')
+		problemForm = ProblemForm(request.POST, request.FILES, prefix='form2')
 		problemSpecificForm = ProblemSpecificForm(request.POST, prefix='form3')
 		newSpecificForm = NewSpecificForm(request.POST, prefix='form4')
 
@@ -101,6 +101,7 @@ def addVisit(request, farm_id):
 			# collect user's input for problemForm
 			crop_name = problemForm.cleaned_data['crop_name']
 			notes = problemForm.cleaned_data['notes']
+			picture = problemForm.cleaned_data['picture']
 
 			# collect user's input for problemSpecificForm
 			type_name = problemSpecificForm.cleaned_data['type_name']
@@ -115,7 +116,7 @@ def addVisit(request, farm_id):
 
 			# add the problem to database
 			farm = get_object_or_404(Farm, pk=farm_id)
-			query_problem = Problem(farm_id=farm, crop_name=crop_name, notes=notes)
+			query_problem = Problem(farm_id=farm, crop_name=crop_name, notes=notes, img=picture)
 			query_problem.save()
 
 			# check if this specifics already exists in Problem_specifics table
@@ -183,6 +184,7 @@ def visitDetail(request, visit_id):
 	problem_specific_list = []
 	crop_list = []
 	notes_list = []
+	pic_list = []
 
 	for pID in problems_with_id:
 		# get the specific problem id from the given problem id in the problem_has_specifics relation table
@@ -193,8 +195,9 @@ def visitDetail(request, visit_id):
 		problem_specific_list.append(Problem_specifics.objects.get(pk=problemSpecs1).name)
 		crop_list.append(Problem.objects.get(pk=pID).crop_name)
 		notes_list.append(Problem.objects.get(pk=pID).notes)
+		pic_list.append(Problem.objects.get(pk=pID).img)
 
-	zipped_list = zip(problem_type_list, problem_specific_list, crop_list, notes_list)
+	zipped_list = zip(problem_type_list, problem_specific_list, crop_list, notes_list, pic_list)
 
 	return render(request, 'FarmInfo/visitDetail.html', {'zipped_list': zipped_list, 'visit': visit})
 
