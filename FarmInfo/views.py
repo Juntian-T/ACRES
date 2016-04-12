@@ -219,13 +219,14 @@ def addCropsToFarm(request, farm_id):
 
 #.../report page
 def report(request):
-	#form = ReportForm()
+	all_crops = Crop.objects.all().order_by('crop_name')
 	if request.method == 'POST':
 		reportForm = ReportForm(request.POST, prefix='form1')
 
 		if reportForm.is_valid():
 			# collect user's input for reportForm
-			crop_name = reportForm.cleaned_data['crop']
+			# crop_name = reportForm.cleaned_data['crop']
+			crop_name = request.POST.getlist('crop')
 			
 			zip_code = reportForm.cleaned_data['zip_code']
 
