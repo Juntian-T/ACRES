@@ -19,6 +19,7 @@ class Farm(models.Model):
 	city = models.CharField(max_length=200)
 	state = models.CharField(max_length=200)
 	address = models.CharField(max_length=200)
+	zip_code = models.CharField(max_length=5)
 	office_num = models.CharField(max_length=200, blank=True)
 	fax = models.CharField(max_length=200, blank=True)
 	web = models.CharField(max_length=200, blank=True)
