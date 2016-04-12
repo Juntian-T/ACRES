@@ -51,6 +51,7 @@ def addFarm(request):
 			fax = farmForm.cleaned_data['fax']
 			web = farmForm.cleaned_data['web']
 			notes = farmForm.cleaned_data['notes']
+			zip_code = farmForm.cleaned_data['zip_code']
 
 			# gets necessary information for adding the Client
 			first_name = clientForm.cleaned_data['first_name']
@@ -63,7 +64,7 @@ def addFarm(request):
 			notes = clientForm.cleaned_data['notes']
 
 			# query to add the Farm
-			query1 = Farm(farm_name=farm_name, city=city, state=state, address=address, office_num=office_num, fax=fax, web=web, notes=notes)
+			query1 = Farm(farm_name=farm_name, city=city, state=state, address=address, office_num=office_num, fax=fax, web=web, notes=notes, zip_code=zip_code)
 			query1.save()
 
 			# query to add the Client

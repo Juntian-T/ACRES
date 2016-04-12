@@ -15,6 +15,7 @@ class FarmForm(forms.Form):
 	city = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control col-lg-7'}), label='City*', max_length=200)
 	state = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control col-lg-7'}), label='State*', max_length=200)
 	address = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control col-lg-7'}), label='Address*', max_length=200)
+	zip_code = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control col-lg-7'}), label='Zip*', max_length=5)
 	office_num = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control col-lg-7'}), label='Office Number', max_length=200, required=False)
 	fax = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control col-lg-7'}), label='Fax', max_length=200, required=False)
 	web = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control col-lg-7'}), label='Web', max_length=200, required=False)
