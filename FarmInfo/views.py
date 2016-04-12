@@ -202,15 +202,25 @@ def visitDetail(request, visit_id):
 
 	return render(request, 'FarmInfo/visitDetail.html', {'zipped_list': zipped_list, 'visit': visit})
 
+# add crops that are grown on this farm
 def addCropsToFarm(request, farm_id):
 	all_crops = Crop.objects.all().order_by('crop_name')
 	if request.method == 'POST':
 		grows_form = GrowsForm(request.POST)
+		# get the crops selected as a list
 		selected_crop = request.POST.getlist('crop_name')
+		# get the farm
 		farm = get_object_or_404(Farm, pk=farm_id)
+		
+		# for every crop selected, add it to the table
 		for x in selected_crop:
-			grows_query = Grows(farm_id=farm, crop_name=get_object_or_404(Crop, pk=x))
-			grows_query.save()
+			# check if this Grows relationship already exists in Grows table
+			num_results = Grows.objects.filter(farm_id=farm, crop_name=get_object_or_404(Crop, pk=x)).count()
+			
+			# add the Crop to this Farm only if the Crop does not exist in the farm
+			if (num_results == 0):
+				grows_query = Grows(farm_id=farm, crop_name=get_object_or_404(Crop, pk=x))
+				grows_query.save()
 
 	else:
 		grows_form = GrowsForm()
