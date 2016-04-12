@@ -29,4 +29,10 @@ urlpatterns = [
     url(r'^visitDetail/(?P<visit_id>[0-9]+)/$', views.visitDetail, name='visitDetail'),
 
     url(r'^addCropsToFarm/(?P<farm_id>[0-9]+)$', views.addCropsToFarm, name='addCropsToFarm'),
+
+    #url(r'^images/(?P<path>.*)$', 'django.views.images.serve',{'document_root': settings.MEDIA_ROOT}),
+
+    #.../report
+    url(r'^report', views.report, name='report'),
+
 ]

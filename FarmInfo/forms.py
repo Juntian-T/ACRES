@@ -55,5 +55,12 @@ class GrowsForm(forms.Form):
 	CHOICES = [(x.crop_name, x.crop_name) for x in Crop.objects.all().order_by('crop_name')]
 	crop_name = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=CHOICES, label='Crops')
 
+class ReportForm(forms.Form):
+	crop = forms.ModelChoiceField(queryset=Crop.objects.all().order_by('crop_name'), label='Crop')
+	zip_code = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control col-lg-7'}), label='Zip Code', max_length=200)
+	date_from = forms.DateField(widget=SelectDateWidget(attrs={'class':'form-control col-lg-7'}), initial=datetime.date.today, label='Date from', required=True)
+	date_to = forms.DateField(widget=SelectDateWidget(attrs={'class':'form-control col-lg-7'}), initial=datetime.date.today, label='to', required=True)
+
+
 
 

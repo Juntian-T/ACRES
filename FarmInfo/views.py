@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 
 from .models import Farm, Crop, Client, Ownership, Grows, Farm_has_visit, Visit, Problem, Visit_has_problem, Problem_specifics, Problem_has_specifics
-from .forms import CropForm, FarmForm, ClientForm, VisitForm, ProblemForm, ProblemSpecificForm, NewSpecificForm, GrowsForm
+from .forms import CropForm, FarmForm, ClientForm, VisitForm, ProblemForm, ProblemSpecificForm, NewSpecificForm, GrowsForm, ReportForm
 
 # .../FarmInfo page
 def index(request):
@@ -216,6 +216,27 @@ def addCropsToFarm(request, farm_id):
 		grows_form = GrowsForm()
 
 	return render(request, 'FarmInfo/addCropsToFarm.html', {'grows_form': grows_form})
+
+#.../report page
+def report(request):
+	#form = ReportForm()
+	if request.method == 'POST':
+		reportForm = ReportForm(request.POST, prefix='form1')
+
+		if reportForm.is_valid():
+			# collect user's input for reportForm
+			crop_name = reportForm.cleaned_data['crop']
+			
+			zip_code = reportForm.cleaned_data['zip_code']
+
+			date_from = reportForm.cleaned_data['date_from']
+
+			date_to = reportForm.cleaned_data['date_to']
+
+	else:
+		reportForm = ReportForm(prefix='form1')
+
+	return render(request, 'FarmInfo/report.html', {'reportForm': reportForm})
 
 
 
