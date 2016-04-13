@@ -244,6 +244,57 @@ def report(request):
 			date_from = reportForm.cleaned_data['date_from']
 
 			date_to = reportForm.cleaned_data['date_to']
+            
+                        visit_ids = []
+                        problem_ids = []
+                        crop = []
+                        specific_ids = []
+                        prob_name = []
+            
+                        # get all farm IDs by zipcode
+                        farm_ids = Farm.objects.filter(zip_code=zip_code).values_list(pk, flat=True)
+                        # get all visit IDs by farm_ids
+                        for farmId in farm_ids:
+                                vId = Farm_has_visit.objects.filter(farm_id=farmId).values_list('visit_id', flat=True)
+                                visit_ids.append(vId)
+                        #visit_ids = Farm_has_visit.objects.filter(farm_id=farm_ids).values_list('visit_id', flat=True)
+
+                        # filter the visit_ids by visit dates
+                        for vId in visit_ids:
+                                vId = Visit.objects.filter(pk=vId, visit_date_range=[date_from,date_to]).values_list('visit_id', flat=True)
+                                visit_ids.append(vId)
+                        #visit_ids = Visit.objects.filter(pk=visit_ids, visit_date_range=[date_from,date_to]).values_list('visit_id', flat=True)
+
+                        # get all problem IDs by the visits
+                        for vId in visit_ids:
+                                probId = Visit_has_problem.objects.filter(visit_id=vId).values_list('problem_id', flat=True)
+                                problem_ids.append(probId)
+                        #problem_ids = Visit_has_problem.objects.filter(visit_id=visit_ids).values_list('problem_id', flat=True)
+
+                        # filter the problem_ids by specified crops
+                        for probId in problem_ids:
+                                probId = Problem.objects.filter(pk=probId, crop=crop_name).values_list('problem_id', flat=True)
+                                problem_ids.append(probId)
+                        #problem_ids = Problem.objects.filter(pk=problem_ids, crop=crop_name).values_list('problem_id', flat=True)
+
+                        # get the crop names as a list
+                        for probId in problem_ids:
+                                cropName = Problem.objects.filter(pk=probId).values_list('crop', flat=True)
+                                crop.append(cropName)
+                        #crop = Problem.objects.filter(pk=problem_ids).values_list('crop', flat=True)
+
+                        # get all specific IDs by the problem_ids
+                        for probId in problem_ids:
+                                specificId = Problem_has_specifics.objects.filter(problem_id=probId).values_list('specific_id', flat=True)
+                                specific_ids.append(specificId)
+                        #specific_ids = Problem_has_specifics.objects.filter(problem_id=problem_ids).values_list('specific_id', flat=True)
+
+                        # get the problem names by specific_ids
+                        for specificId in specific_ids:
+                                specificName = Problem_specifics.objects.filter(pk=specificId).values_list('name', flat=True)
+                                prob_name.append(specificName)
+                        #prob_name = Problem_specifics.objects.filter(pk=specific_ids).values_list('name', flat=True)
+
 
 	else:
 		reportForm = ReportForm(prefix='form1')
