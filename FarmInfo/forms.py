@@ -42,6 +42,7 @@ class ProblemForm(forms.Form):
 	crop_name = forms.ModelChoiceField(queryset=Crop.objects.all().order_by('crop_name'), label='Crop Affected')
 	notes = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control col-lg-7'}), label='Notes' , required=False)
 	picture = forms.ImageField();
+	picture_2 = forms.ImageField();
 
 # Problem specific form
 class ProblemSpecificForm(forms.Form):

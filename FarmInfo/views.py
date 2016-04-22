@@ -302,7 +302,8 @@ def report(request):
 	return render(request, 'FarmInfo/report.html', {'reportForm': reportForm})
 
 
-
-
+#.../mapFarms page
+def mapFarms(request):
+	return render(request, 'FarmInfo/mapFarms.html')
 
 

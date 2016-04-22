@@ -35,4 +35,7 @@ urlpatterns = [
     #.../report
     url(r'^report', views.report, name='report'),
 
+    #.../mapFarms
+    url(r'^mapFarms', views.mapFarms, name='mapFarms'),
+
 ]
