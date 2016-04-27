@@ -50,6 +50,9 @@
 
     <div class="col-lg-6 col-lg-offset-1">
     <h3>Map All Farms</h3>
+    {%for addr in address_list%}
+    	<p>{{addr}}</p>
+    {%endfor%}
     </div>
 
 
