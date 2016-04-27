@@ -294,6 +294,38 @@ def report(request):
                                 specificName = Problem_specifics.objects.filter(pk=specificId).values_list('name', flat=True)
                                 prob_name.append(specificName)
                         #prob_name = Problem_specifics.objects.filter(pk=specific_ids).values_list('name', flat=True)
+                        
+                        
+                        
+                        
+                        filteredCnP = []     # filtered crops and problems
+                        for index in range(0,len(crop)): 
+                            oneCrop = crop[index]
+                            oneProblem = prob_name[index]
+                            
+                            flag = False     # the crop and problem not in the filteredCnP
+                            for ind in range(0,len(filteredCnP)):
+                                theList = filteredCnP[ind]
+                                if oneCrop in theList:
+                                    if oneProblem in theList:
+                                        filteredCnP[ind].append(oneProblem)
+                                        flag = True
+                                        break
+                                        
+                            if flag is False:   # add the new crop and problem to the filteredCnP
+                                newList = [oneCrop,oneProblem]
+                                filteredCnP.append(newList)
+                        
+                        
+                        exportTable = [3][len(filteredCnP)]
+#                        exportTable = [[for width in range(0,3)] for height in range(0,len(filteredCnP))]
+                        for index in range(0,len(filteredCnP)):
+                            theList = filteredCnP[index]
+                            exportTable[0][index] = theList[0]
+                            exportTable[1][index] = theList[1]
+                            exportTable[2][index] = len(theList)-1
+
+
 
 
 	else:
