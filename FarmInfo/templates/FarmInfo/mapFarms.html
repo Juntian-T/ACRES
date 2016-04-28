@@ -1,4 +1,18 @@
 {% load staticfiles %}
+<head>
+	<style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 50%;
+        width: 80%;
+      }
+    </style>
+
+</head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -48,17 +62,17 @@
 	<!--This page currently shows pins in the Google Maps API for every farm in the database. It can be edited to add filters 
 	    to show only certain farms. -->
 
-    <div class="col-lg-6 col-lg-offset-1">
+	<div class="container"> 
+    <div class="col-lg-13">
     <h3>Map All Farms</h3>
-    {%for addr in address_list%}
-    	<p>{{addr}}</p>
-    {%endfor%}
+    <div class="col-lg-13" id="map"></div>
     </div>
 
 
 
-  <br>
-  <footer>
+    </div>
+  
+<footer>
     <div class="container">
       <div class="row">
         <div class="col-lg-10">
@@ -66,9 +80,63 @@
         </div>
       </div>
     </div>
-  </footer>
+</footer>
 <!-- jQuery -->
 <script src="{% static 'js/jquery.js' %}"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
+<!-- Google Map API --> 
+<script>
+
+	//display the default map
+    function initMap() {
+		var map = new google.maps.Map(document.getElementById('map'), {
+        	zoom: 8
+        });
+        var geocoder = new google.maps.Geocoder();
+		geocodeAddress(geocoder, map);
+    }
+
+    //put farms address in a list
+    var addr_list = [];
+    {% for farm in farm_list %}
+    addr_list.push('{{ farm.address }},{{ farm.city }}+{{ farm.state }}');
+    {% endfor %}
+
+    //put farm names in another list, for infowindow
+    var info_list = [];
+    {% for farm in farm_list %}
+    info_list.push('{{ farm.farm_name }}');
+    {% endfor %}
+
+    function geocodeAddress(geocoder, resultsMap) {
+    	for (var i = 0; i < addr_list.length; i++) {
+    		//store the current info (farm name)
+    		var info = info_list[i];
+    		geocoder.geocode({'address': addr_list[i]}, (function(info) {
+    			return function(results, status) {
+				    if (status === google.maps.GeocoderStatus.OK) {
+				    	//create a infowindow for each marker
+				    	var infowindow = new google.maps.InfoWindow({
+							content: info 
+						});
+				    	resultsMap.setCenter(results[0].geometry.location);
+				    	//for each farm address, add a marker on the map
+				    	var marker = new google.maps.Marker({
+				        	map: resultsMap,
+				        	position: results[0].geometry.location,
+				      	});
+				      	marker.addListener('click', function() {
+		    				infowindow.open(resultsMap, marker);
+		  				});
+			    	}	
+			    }
+		  	})(info));
+    	}
+	}
+
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVPk9gSVV3gH0SEeP_4ChsRxM_i3bkGy0&callback=initMap"
+  type="text/javascript"></script>
+
 </body>

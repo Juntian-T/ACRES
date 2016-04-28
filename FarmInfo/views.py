@@ -336,7 +336,7 @@ def report(request):
 #.../mapFarms page
 def mapFarms(request):
     # get a list of all the addresses of all the farms
-    address_list = Farm.objects.values_list('address', flat=True)
-    return render(request, 'FarmInfo/mapFarms.html', {'address_list': address_list})
+	farm_list = Farm.objects.all()
+	return render(request, 'FarmInfo/mapFarms.html', {'farm_list': farm_list})
 
 
