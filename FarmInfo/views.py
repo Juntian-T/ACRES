@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
+from django.core.urlresolvers import reverse
 
 from .models import Farm, Crop, Client, Ownership, Grows, Farm_has_visit, Visit, Problem, Visit_has_problem, Problem_specifics, Problem_has_specifics
 from .forms import CropForm, FarmForm, ClientForm, VisitForm, ProblemForm, ProblemSpecificForm, NewSpecificForm, GrowsForm, ReportForm
@@ -146,6 +147,7 @@ def addVisit(request, farm_id):
 			query_problem_has_specifics.save()
 
 			messages.success(request, 'New Visit Added!')
+			return HttpResponseRedirect(reverse('viewVisits', args=(farm_id,)))
 
 	else:
 		visitForm = VisitForm(prefix='form1')
@@ -223,6 +225,8 @@ def addCropsToFarm(request, farm_id):
 				grows_query = Grows(farm_id=farm, crop_name=get_object_or_404(Crop, pk=x))
 				grows_query.save()
 
+		return HttpResponseRedirect(reverse('detail', args=(farm_id,)))
+
 	else:
 		grows_form = GrowsForm()
 
@@ -237,7 +241,7 @@ def report(request):
 		if reportForm.is_valid():
 			# collect user's input for reportForm
 			# crop_name = reportForm.cleaned_data['crop']
-			crop_name = request.POST.getlist('crop')
+			crop_names = request.POST.getlist('crop')
 			
 			zip_code = reportForm.cleaned_data['zip_code']
 
@@ -245,87 +249,85 @@ def report(request):
 
 			date_to = reportForm.cleaned_data['date_to']
             
-           		visit_ids = []
-            	problem_ids = []
-            	crop = []
-            	specific_ids = []
-            	prob_name = []
+			visit_ids = []
+#         	problem_ids = []
+#         	crop = []
+#         	specific_ids = []
+#         	prob_name = []
+        
+#             # get all farm IDs by zipcode
+# 			farm_ids = Farm.objects.filter(zip_code=zip_code).values_list(pk, flat=True)
+#             # get all visit IDs by farm_ids
+# 			for farmId in farm_ids:
+#             	vId = Farm_has_visit.objects.filter(farm_id=farmId).values_list('visit_id', flat=True)
+#             	visit_ids.append(vId)
+#             #visit_ids = Farm_has_visit.objects.filter(farm_id=farm_ids).values_list('visit_id', flat=True)
+
+#             # filter the visit_ids by visit dates
+# 			for vId in visit_ids:
+# 				vId = Visit.objects.filter(pk=vId, visit_date_range=[date_from,date_to]).values_list('visit_id', flat=True)
+#             	visit_ids.append(vId)
+#             #visit_ids = Visit.objects.filter(pk=visit_ids, visit_date_range=[date_from,date_to]).values_list('visit_id', flat=True)
+
+# 			# get all problem IDs by the visits
+# 			for vId in visit_ids:
+#             	probId = Visit_has_problem.objects.filter(visit_id=vId).values_list('problem_id', flat=True)
+#             	problem_ids.append(probId)
+#             #problem_ids = Visit_has_problem.objects.filter(visit_id=visit_ids).values_list('problem_id', flat=True)
+
+# 			# filter the problem_ids by specified crops
+# 			for probId in problem_ids:
+#             	probId = Problem.objects.filter(pk=probId, crop=crop_name).values_list('problem_id', flat=True)
+#             	problem_ids.append(probId)
+#             #problem_ids = Problem.objects.filter(pk=problem_ids, crop=crop_name).values_list('problem_id', flat=True)
+
+# 			# get the crop names as a list
+# 			for probId in problem_ids:
+#             	cropName = Problem.objects.filter(pk=probId).values_list('crop', flat=True)
+#             	crop.append(cropName)
+#             #crop = Problem.objects.filter(pk=problem_ids).values_list('crop', flat=True)
+
+#             # get all specific IDs by the problem_ids
+#             for probId in problem_ids:
+#             	specificId = Problem_has_specifics.objects.filter(problem_id=probId).values_list('specific_id', flat=True)
+#             	specific_ids.append(specificId)
+#             #specific_ids = Problem_has_specifics.objects.filter(problem_id=problem_ids).values_list('specific_id', flat=True)
+
+#             # get the problem names by specific_ids
+# 			for specificId in specific_ids:
+#             	specificName = Problem_specifics.objects.filter(pk=specificId).values_list('name', flat=True)
+#             	prob_name.append(specificName)
+#             #prob_name = Problem_specifics.objects.filter(pk=specific_ids).values_list('name', flat=True)
             
-                # get all farm IDs by zipcode
-                farm_ids = Farm.objects.filter(zip_code=zip_code).values_list(pk, flat=True)
-                # get all visit IDs by farm_ids
-                for farmId in farm_ids:
-                        vId = Farm_has_visit.objects.filter(farm_id=farmId).values_list('visit_id', flat=True)
-                        visit_ids.append(vId)
-                #visit_ids = Farm_has_visit.objects.filter(farm_id=farm_ids).values_list('visit_id', flat=True)
+            
+#             #count the crop/problem data before returning it
+# 			filteredCnP = []     # filtered crops and problems
+#             for index in range(0,len(crop)): 
+#             	oneCrop = crop[index]
+#             	oneProblem = prob_name[index]
+#             	flag = False     # the crop and problem not in the filteredCnP
+#             	for ind in range(0,len(filteredCnP)):
+#             		theList = filteredCnP[ind]
+#                     if oneCrop in theList:
+#                         if oneProblem in theList:
+#                             filteredCnP[ind].append(oneProblem)
+#                             flag = True
+#                             break
+                            
+#                 if flag is False:   # add the new crop and problem to the filteredCnP
+#                 	newList = [oneCrop,oneProblem]
+# 					filteredCnP.append(newList)
+            
+            
+#             exportTable = [3][len(filteredCnP)]
+# #                        exportTable = [[for width in range(0,3)] for height in range(0,len(filteredCnP))]
+#             for index in range(0,len(filteredCnP)):
+#                 theList = filteredCnP[index]
+#                 exportTable[0][index] = theList[0]
+#                 exportTable[1][index] = theList[1]
+#                 exportTable[2][index] = len(theList)-1
 
-                # filter the visit_ids by visit dates
-                for vId in visit_ids:
-                        vId = Visit.objects.filter(pk=vId, visit_date_range=[date_from,date_to]).values_list('visit_id', flat=True)
-                        visit_ids.append(vId)
-                #visit_ids = Visit.objects.filter(pk=visit_ids, visit_date_range=[date_from,date_to]).values_list('visit_id', flat=True)
-
-                # get all problem IDs by the visits
-                for vId in visit_ids:
-                        probId = Visit_has_problem.objects.filter(visit_id=vId).values_list('problem_id', flat=True)
-                        problem_ids.append(probId)
-                #problem_ids = Visit_has_problem.objects.filter(visit_id=visit_ids).values_list('problem_id', flat=True)
-
-                # filter the problem_ids by specified crops
-                for probId in problem_ids:
-                        probId = Problem.objects.filter(pk=probId, crop=crop_name).values_list('problem_id', flat=True)
-                        problem_ids.append(probId)
-                #problem_ids = Problem.objects.filter(pk=problem_ids, crop=crop_name).values_list('problem_id', flat=True)
-
-                # get the crop names as a list
-                for probId in problem_ids:
-                        cropName = Problem.objects.filter(pk=probId).values_list('crop', flat=True)
-                        crop.append(cropName)
-                #crop = Problem.objects.filter(pk=problem_ids).values_list('crop', flat=True)
-
-                # get all specific IDs by the problem_ids
-                for probId in problem_ids:
-                        specificId = Problem_has_specifics.objects.filter(problem_id=probId).values_list('specific_id', flat=True)
-                        specific_ids.append(specificId)
-                #specific_ids = Problem_has_specifics.objects.filter(problem_id=problem_ids).values_list('specific_id', flat=True)
-
-                # get the problem names by specific_ids
-                for specificId in specific_ids:
-                        specificName = Problem_specifics.objects.filter(pk=specificId).values_list('name', flat=True)
-                        prob_name.append(specificName)
-                #prob_name = Problem_specifics.objects.filter(pk=specific_ids).values_list('name', flat=True)
-                
-                
-                #count the crop/problem data before returning it
-                filteredCnP = []     # filtered crops and problems
-                for index in range(0,len(crop)): 
-                    oneCrop = crop[index]
-                    oneProblem = prob_name[index]
-                    
-                    flag = False     # the crop and problem not in the filteredCnP
-                    for ind in range(0,len(filteredCnP)):
-                        theList = filteredCnP[ind]
-                        if oneCrop in theList:
-                            if oneProblem in theList:
-                                filteredCnP[ind].append(oneProblem)
-                                flag = True
-                                break
-                                
-                    if flag is False:   # add the new crop and problem to the filteredCnP
-                        newList = [oneCrop,oneProblem]
-                        filteredCnP.append(newList)
-                
-                
-                exportTable = [3][len(filteredCnP)]
-#                        exportTable = [[for width in range(0,3)] for height in range(0,len(filteredCnP))]
-                for index in range(0,len(filteredCnP)):
-                    theList = filteredCnP[index]
-                    exportTable[0][index] = theList[0]
-                    exportTable[1][index] = theList[1]
-                    exportTable[2][index] = len(theList)-1
-
-
-
+		return HttpResponseRedirect('../') #redirect to homepage (may change later)
 
 	else:
 		reportForm = ReportForm(prefix='form1')

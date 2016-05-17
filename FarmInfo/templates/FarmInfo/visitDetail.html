@@ -96,7 +96,9 @@
         Specific Problem: {{ specific }}<br>
         Crop Affected: {{ crop }}<br>
         Notes: {{ notes }}<br>
+        {% if pic %}
         Picture: <img src="{{ pic.url }}" width="100%" /><br>
+        {% endif %}
       </div>
     </div>
     {% endfor %}
